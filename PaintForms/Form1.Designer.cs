@@ -36,6 +36,8 @@
             SetColorLime = new ToolStripButton();
             SetColorCyan = new ToolStripButton();
             SetColorFushia = new ToolStripButton();
+            toolStripSeparator2 = new ToolStripSeparator();
+            OpenColorPicker = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
             SetSize = new ToolStripDropDownButton();
             SetSize1 = new ToolStripMenuItem();
@@ -53,10 +55,14 @@
             PaintBox = new PictureBox();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
-            newToolStripMenuItem = new ToolStripMenuItem();
-            openToolStripMenuItem = new ToolStripMenuItem();
-            saveToolStripMenuItem = new ToolStripMenuItem();
+            NewCanvas = new ToolStripMenuItem();
+            OpenImage = new ToolStripMenuItem();
+            SaveImage = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripSeparator();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            ColorPicker = new ColorDialog();
+            SaveCanvas = new SaveFileDialog();
+            OpenCanvas = new OpenFileDialog();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PaintBox).BeginInit();
             menuStrip1.SuspendLayout();
@@ -65,7 +71,7 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { SetColorBlack, SetColorWhite, SetColorRed, SetColorLime, SetColorCyan, SetColorFushia, toolStripSeparator1, SetSize, SetTool, ClearCanvas });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { SetColorBlack, SetColorWhite, SetColorRed, SetColorLime, SetColorCyan, SetColorFushia, toolStripSeparator2, OpenColorPicker, toolStripSeparator1, SetSize, SetTool, ClearCanvas });
             toolStrip1.Location = new Point(0, 28);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 27);
@@ -137,6 +143,23 @@
             SetColorFushia.Size = new Size(29, 24);
             SetColorFushia.Text = "toolStripButton5";
             SetColorFushia.Click += SetColorFushia_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(6, 27);
+            // 
+            // OpenColorPicker
+            // 
+            OpenColorPicker.BackColor = Color.Transparent;
+            OpenColorPicker.DisplayStyle = ToolStripItemDisplayStyle.None;
+            OpenColorPicker.ForeColor = Color.White;
+            OpenColorPicker.Image = (Image)resources.GetObject("OpenColorPicker.Image");
+            OpenColorPicker.ImageTransparentColor = Color.Magenta;
+            OpenColorPicker.Name = "OpenColorPicker";
+            OpenColorPicker.Size = new Size(29, 24);
+            OpenColorPicker.Text = "Custom";
+            OpenColorPicker.Click += OpenColorPicker_Click;
             // 
             // toolStripSeparator1
             // 
@@ -239,8 +262,8 @@
             ClearCanvas.Image = (Image)resources.GetObject("ClearCanvas.Image");
             ClearCanvas.ImageTransparentColor = Color.Magenta;
             ClearCanvas.Name = "ClearCanvas";
-            ClearCanvas.Size = new Size(47, 24);
-            ClearCanvas.Text = "Clear";
+            ClearCanvas.Size = new Size(130, 24);
+            ClearCanvas.Text = "Make Transparent";
             ClearCanvas.Click += ClearCanvas_Click;
             // 
             // PaintBox
@@ -267,34 +290,50 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { NewCanvas, OpenImage, SaveImage, toolStripMenuItem1, exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(46, 24);
             fileToolStripMenuItem.Text = "File";
             // 
-            // newToolStripMenuItem
+            // NewCanvas
             // 
-            newToolStripMenuItem.Name = "newToolStripMenuItem";
-            newToolStripMenuItem.Size = new Size(128, 26);
-            newToolStripMenuItem.Text = "New";
+            NewCanvas.Name = "NewCanvas";
+            NewCanvas.ShortcutKeys = Keys.Control | Keys.N;
+            NewCanvas.Size = new Size(224, 26);
+            NewCanvas.Text = "New";
+            NewCanvas.Click += NewCanvas_Click;
             // 
-            // openToolStripMenuItem
+            // OpenImage
             // 
-            openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new Size(128, 26);
-            openToolStripMenuItem.Text = "Open";
+            OpenImage.Name = "OpenImage";
+            OpenImage.ShortcutKeys = Keys.Control | Keys.O;
+            OpenImage.Size = new Size(224, 26);
+            OpenImage.Text = "Open";
+            OpenImage.Click += OpenImage_Click;
             // 
-            // saveToolStripMenuItem
+            // SaveImage
             // 
-            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new Size(128, 26);
-            saveToolStripMenuItem.Text = "Save";
+            SaveImage.Name = "SaveImage";
+            SaveImage.ShortcutKeys = Keys.Control | Keys.S;
+            SaveImage.Size = new Size(224, 26);
+            SaveImage.Text = "Save";
+            SaveImage.Click += SaveImage_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(221, 6);
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(128, 26);
+            exitToolStripMenuItem.Size = new Size(224, 26);
             exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
+            // 
+            // OpenCanvas
+            // 
+            OpenCanvas.FileName = "openFileDialog1";
             // 
             // Form1
             // 
@@ -306,7 +345,7 @@
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "Form1";
-            Text = "Form1";
+            Text = "( PAIN ) t";
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)PaintBox).EndInit();
@@ -336,9 +375,9 @@
         private PictureBox PaintBox;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
-        private ToolStripMenuItem newToolStripMenuItem;
-        private ToolStripMenuItem openToolStripMenuItem;
-        private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem NewCanvas;
+        private ToolStripMenuItem OpenImage;
+        private ToolStripMenuItem SaveImage;
         private ToolStripMenuItem exitToolStripMenuItem;
         private ToolStripDropDownButton SetTool;
         private ToolStripMenuItem SetLine;
@@ -346,5 +385,11 @@
         private ToolStripMenuItem SetEllipse;
         private ToolStripMenuItem SetPencil;
         private ToolStripButton ClearCanvas;
+        private ToolStripButton OpenColorPicker;
+        private ToolStripSeparator toolStripMenuItem1;
+        private ColorDialog ColorPicker;
+        private ToolStripSeparator toolStripSeparator2;
+        private SaveFileDialog SaveCanvas;
+        private OpenFileDialog OpenCanvas;
     }
 }

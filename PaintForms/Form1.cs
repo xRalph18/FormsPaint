@@ -25,6 +25,8 @@ namespace PaintForms
         {
             InitializeComponent();
 
+            SaveCanvas.Filter = "PNG (*.png)|*.png|JPG (*.jpg; *.jpeg)|*.jpg;*.jpeg|GIF (*.gif)|*.gif|BMP (*.bmp)|*.bmp|TIFF (*.tif; *.tiff)|*.tif;*.tiff|" + "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff;*.webp";
+
             for (int i = 0; i < bitmap.Width; i++)
             {
                 for (int j = 0; j < bitmap.Height; j++)
@@ -69,11 +71,19 @@ namespace PaintForms
                 var width = e.X - startPos.X;
                 var height = e.Y - startPos.Y;
 
-                //finish
-
-                if (width < 0)
+                if (width < 0 && height < 0)
                 {
-                    graphics.DrawRectangle(pen, startPos.X + width, startPos.Y, startPos.X, height);
+                    graphics.DrawRectangle(pen, startPos.X + width, startPos.Y + height, startPos.X - (startPos.X + width), startPos.Y - (startPos.Y + height));
+                    PaintBox.Image = bitmap;
+                }
+                else if (width < 0)
+                {
+                    graphics.DrawRectangle(pen, startPos.X + width, startPos.Y, startPos.X - (startPos.X + width), height);
+                    PaintBox.Image = bitmap;
+                }
+                else if (height < 0)
+                {
+                    graphics.DrawRectangle(pen, startPos.X, startPos.Y + height, width, startPos.Y - (startPos.Y + height));
                     PaintBox.Image = bitmap;
                 }
                 else
@@ -164,7 +174,7 @@ namespace PaintForms
             {
                 for (int j = 0; j < bitmap.Height; j++)
                 {
-                    bitmap.SetPixel(i, j, Color.White);
+                    bitmap.SetPixel(i, j, Color.Transparent);
                 }
             }
             PaintBox.Image = bitmap;
@@ -188,6 +198,74 @@ namespace PaintForms
         private void SetEllipse_Click(object sender, EventArgs e)
         {
             tool = Tools.Ellipse;
+        }
+
+        private void OpenColorPicker_Click(object sender, EventArgs e)
+        {
+            ColorPicker.ShowDialog();
+            pen.Color = ColorPicker.Color;
+            OpenColorPicker.BackColor = ColorPicker.Color;
+        }
+
+        private void NewCanvas_Click(object sender, EventArgs e)
+        {
+            bitmap = new Bitmap(1920, 1080);
+
+            for (int i = 0; i < bitmap.Width; i++)
+            {
+                for (int j = 0; j < bitmap.Height; j++)
+                {
+                    bitmap.SetPixel(i, j, Color.White);
+                }
+            }
+            PaintBox.Image = bitmap;
+        }
+
+        private void OpenImage_Click(object sender, EventArgs e)
+        {
+            OpenCanvas.Filter = "PNG (*.png)|*.png|JPG (*.jpg; *.jpeg)|*.jpg;*.jpeg|GIF (*.gif)|*.gif|BMP (*.bmp)|*.bmp|TIFF (*.tif; *.tiff)|*.tif;*.tiff|" + "All Graphics Types|*.bmp;*.jpg;*.jpeg;*.png;*.tif;*.tiff;*.webp";
+            var dialogStatus = OpenCanvas.ShowDialog();
+
+            if (dialogStatus == DialogResult.OK)
+            {
+                bitmap = new Bitmap(OpenCanvas.FileName);
+                PaintBox.Image = bitmap;
+            }
+        }
+
+        private void SaveImage_Click(object sender, EventArgs e)
+        {
+            var dialogStatus = SaveCanvas.ShowDialog();
+
+            if (dialogStatus == DialogResult.OK)
+            {
+                bitmap.Save(SaveCanvas.FileName);
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialogResult = MessageBox.Show("Do you want to save it", "Save before closing", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                var dialogStatus = SaveCanvas.ShowDialog();
+
+                if (dialogStatus == DialogResult.OK)
+                {
+                    bitmap.Save(SaveCanvas.FileName);
+                }
+
+                this.Close();
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                this.Close();
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

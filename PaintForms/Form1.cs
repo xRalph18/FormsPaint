@@ -5,8 +5,8 @@ namespace PaintForms
     public partial class Form1 : Form
     {
         Bitmap bitmap = new Bitmap(1920, 1080);
+        Color penColor = Color.Black;
         Pen pen = new Pen(Color.Black, 1);
-        Brush brush = new SolidBrush(Color.Black);
         bool isDrawing = false;
         int toolSize = 1;
         Vector2 startPos;
@@ -105,67 +105,73 @@ namespace PaintForms
         private void SetColorBlack_Click(object sender, EventArgs e)
         {
             pen.Color = Color.Black;
-            brush = new SolidBrush(Color.Black);
+            penColor = Color.Black;
         }
 
         private void SetColorWhite_Click(object sender, EventArgs e)
         {
             pen.Color = Color.White;
-            brush = new SolidBrush(Color.White);
+            penColor = Color.White;
         }
 
         private void SetColorRed_Click(object sender, EventArgs e)
         {
             pen.Color = Color.Red;
-            brush = new SolidBrush(Color.Red);
+            penColor = Color.Red;
         }
 
         private void SetColorLime_Click(object sender, EventArgs e)
         {
             pen.Color = Color.Lime;
-            brush = new SolidBrush(Color.Lime);
+            penColor = Color.Lime;
         }
 
         private void SetColorCyan_Click(object sender, EventArgs e)
         {
             pen.Color = Color.Cyan;
-            brush = new SolidBrush(Color.Cyan);
+            penColor = Color.Cyan;
         }
 
         private void SetColorFushia_Click(object sender, EventArgs e)
         {
             pen.Color = Color.Fuchsia;
-            brush = new SolidBrush(Color.Fuchsia);
+            penColor = Color.Fuchsia;
         }
 
         private void SetSize1_Click(object sender, EventArgs e)
         {
             toolSize = 1;
+            pen = new Pen(penColor, toolSize);
         }
 
         private void SetSize2_Click(object sender, EventArgs e)
         {
             toolSize = 2;
+            pen = new Pen(penColor, toolSize);
         }
 
         private void SetSize4_Click(object sender, EventArgs e)
         {
             toolSize = 4;
+            pen = new Pen(penColor, toolSize);
         }
 
         private void SetSize8_Click(object sender, EventArgs e)
         {
             toolSize = 8;
+            pen = new Pen(penColor, toolSize);
         }
 
         private void SetSize16_Click(object sender, EventArgs e)
         {
             toolSize = 16;
+            pen = new Pen(penColor, toolSize);
         }
 
         private void SetSize32_Click(object sender, EventArgs e)
         {
             toolSize = 32;
+            pen = new Pen(penColor, toolSize);
         }
 
         private void ClearCanvas_Click(object sender, EventArgs e)
@@ -205,6 +211,7 @@ namespace PaintForms
             ColorPicker.ShowDialog();
             pen.Color = ColorPicker.Color;
             OpenColorPicker.BackColor = ColorPicker.Color;
+            penColor = ColorPicker.Color;
         }
 
         private void NewCanvas_Click(object sender, EventArgs e)

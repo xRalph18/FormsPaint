@@ -299,7 +299,7 @@
             // 
             NewCanvas.Name = "NewCanvas";
             NewCanvas.ShortcutKeys = Keys.Control | Keys.N;
-            NewCanvas.Size = new Size(224, 26);
+            NewCanvas.Size = new Size(181, 26);
             NewCanvas.Text = "New";
             NewCanvas.Click += NewCanvas_Click;
             // 
@@ -307,7 +307,7 @@
             // 
             OpenImage.Name = "OpenImage";
             OpenImage.ShortcutKeys = Keys.Control | Keys.O;
-            OpenImage.Size = new Size(224, 26);
+            OpenImage.Size = new Size(181, 26);
             OpenImage.Text = "Open";
             OpenImage.Click += OpenImage_Click;
             // 
@@ -315,19 +315,19 @@
             // 
             SaveImage.Name = "SaveImage";
             SaveImage.ShortcutKeys = Keys.Control | Keys.S;
-            SaveImage.Size = new Size(224, 26);
+            SaveImage.Size = new Size(181, 26);
             SaveImage.Text = "Save";
             SaveImage.Click += SaveImage_Click;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(221, 6);
+            toolStripMenuItem1.Size = new Size(178, 6);
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(224, 26);
+            exitToolStripMenuItem.Size = new Size(181, 26);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 

@@ -1,3 +1,5 @@
+using System.Drawing.Design;
+using System.Drawing.Imaging;
 using System.Numerics;
 
 namespace PaintForms
@@ -5,6 +7,7 @@ namespace PaintForms
     public partial class Form1 : Form
     {
         Bitmap bitmap = new Bitmap(1920, 1080);
+        Bitmap holdImage = new Bitmap(1920, 1080);
         Color penColor = Color.Black;
         Pen pen = new Pen(Color.Black, 1);
         bool isDrawing = false;
@@ -40,11 +43,14 @@ namespace PaintForms
         private void PaintBox_MouseDown(object sender, MouseEventArgs e)
         {
             isDrawing = true;
+            PaintBox.Cursor = Cursors.Cross;
 
             if (tool == Tools.Line || tool == Tools.Rectangle || tool == Tools.Ellipse)
             {
                 startPos = new Vector2(e.X, e.Y);
+                holdImage = bitmap.Clone(new RectangleF(0, 0, bitmap.Width, bitmap.Height), bitmap.PixelFormat);
             }
+
         }
 
         private void PaintBox_MouseMove(object sender, MouseEventArgs e)
@@ -52,14 +58,65 @@ namespace PaintForms
             if (isDrawing == true && tool == Tools.Pencil)
             {
                 Graphics graphics = Graphics.FromImage(bitmap);
-                graphics.DrawRectangle(pen, e.X, e.Y, toolSize, toolSize);
+                graphics.DrawEllipse(pen, e.X, e.Y, toolSize, toolSize);
                 PaintBox.Image = bitmap;
+            }
+            else if (isDrawing == true && tool == Tools.Line)
+            {
+                Graphics graphics = Graphics.FromImage(bitmap);
+                graphics.DrawLine(pen, startPos.X, startPos.Y, e.X, e.Y);
+                PaintBox.Image = bitmap;
+                bitmap = holdImage.Clone(new RectangleF(0, 0, holdImage.Width, holdImage.Height), holdImage.PixelFormat);
+            }
+            else if (isDrawing == true && tool == Tools.Rectangle)
+            {
+                Graphics graphics = Graphics.FromImage(bitmap);
+                var width = e.X - startPos.X;
+                var height = e.Y - startPos.Y;
+
+                if (width < 0 && height < 0)
+                {
+                    graphics.DrawRectangle(pen, startPos.X + width, startPos.Y + height, startPos.X - (startPos.X + width), startPos.Y - (startPos.Y + height));
+                    PaintBox.Image = bitmap;
+                    bitmap = holdImage.Clone(new RectangleF(0, 0, holdImage.Width, holdImage.Height), holdImage.PixelFormat);
+                }
+                else if (width < 0)
+                {
+                    graphics.DrawRectangle(pen, startPos.X + width, startPos.Y, startPos.X - (startPos.X + width), height);
+                    PaintBox.Image = bitmap;
+                    bitmap = holdImage.Clone(new RectangleF(0, 0, holdImage.Width, holdImage.Height), holdImage.PixelFormat);
+                }
+                else if (height < 0)
+                {
+                    graphics.DrawRectangle(pen, startPos.X, startPos.Y + height, width, startPos.Y - (startPos.Y + height));
+                    PaintBox.Image = bitmap;
+                    bitmap = holdImage.Clone(new RectangleF(0, 0, holdImage.Width, holdImage.Height), holdImage.PixelFormat);
+                }
+                else
+                {
+                    graphics.DrawRectangle(pen, startPos.X, startPos.Y, width, height);
+                    PaintBox.Image = bitmap;
+                    bitmap = holdImage.Clone(new RectangleF(0, 0, holdImage.Width, holdImage.Height), holdImage.PixelFormat);
+                }
+            }
+            else if (isDrawing == true && tool == Tools.Ellipse)
+            {
+                Graphics graphics = Graphics.FromImage(bitmap);
+                graphics.DrawEllipse(pen, startPos.X, startPos.Y, e.X - startPos.X, e.Y - startPos.Y);
+                PaintBox.Image = bitmap;
+                bitmap = holdImage.Clone(new RectangleF(0, 0, holdImage.Width, holdImage.Height), holdImage.PixelFormat);
             }
         }
 
         private void PaintBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (isDrawing == true && tool == Tools.Line)
+            if (isDrawing == true && tool == Tools.Pencil)
+            {
+                Graphics graphics = Graphics.FromImage(bitmap);
+                graphics.DrawEllipse(pen, e.X, e.Y, toolSize, toolSize);
+                PaintBox.Image = bitmap;
+            }
+            else if (isDrawing == true && tool == Tools.Line)
             {
                 Graphics graphics = Graphics.FromImage(bitmap);
                 graphics.DrawLine(pen, startPos.X, startPos.Y, e.X, e.Y);
@@ -100,6 +157,7 @@ namespace PaintForms
             }
 
             isDrawing = false;
+            PaintBox.Cursor = Cursors.Default;
         }
 
         private void SetColorBlack_Click(object sender, EventArgs e)
